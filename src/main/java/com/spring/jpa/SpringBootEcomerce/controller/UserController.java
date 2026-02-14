@@ -64,6 +64,10 @@ public class UserController {
 		user= userService.updateUser(user,userId);
 		return ResponseStructure.create(HttpStatus.OK.value(), "user updated", user);
 	}
-	
+	@GetMapping("/findName/{userName}")
+	public ResponseStructure<User> getUserByName(@PathVariable String userName){
+	User user=	userService.findByName(userName);
+	return ResponseStructure.create(HttpStatus.OK.value(), "find the user by name", user);
+	}
 	
 }
