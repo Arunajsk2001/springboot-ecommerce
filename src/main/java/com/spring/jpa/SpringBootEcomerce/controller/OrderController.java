@@ -27,8 +27,8 @@ public class OrderController {
 	
 	
 	@PostMapping("/placeorder/{userId}")
-	public ResponseStructure<Orders> placeOrder(@RequestBody Orders order, @PathVariable int userId){
-	 order =	orderService.placeOrder(order,userId);
+	public ResponseStructure<Orders> placeOrder(@RequestBody List<Integer> productId, @PathVariable int userId){
+	Orders order =	orderService.placeOrder(productId,userId);
 	return ResponseStructure.create(HttpStatus.CREATED.value(), "order has been placed", order);
 	}
 	

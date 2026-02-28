@@ -8,7 +8,7 @@ import dto.OrderRequest;
 
 public interface OrderService {
 
-	Orders placeOrder(Orders order,int userId);
+	Orders placeOrder(List<Integer> productId,int userId);
 
 	List<Orders> fetchAllOrders();
 

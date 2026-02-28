@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.spring_boot.product.repository.ProductRepository;
 import com.spring.jpa.SpringBootEcomerce.entity.Orders;
 import com.spring.jpa.SpringBootEcomerce.entity.Product;
 import com.spring.jpa.SpringBootEcomerce.entity.User;
 import com.spring.jpa.SpringBootEcomerce.repository.OrderRepository;
+import com.spring.jpa.SpringBootEcomerce.repository.ProductRepository;
 import com.spring.jpa.SpringBootEcomerce.repository.UserRepository;
 import com.spring.jpa.SpringBootEcomerce.service.OrderService;
 
@@ -29,14 +29,25 @@ public class OrderServiceImpl implements OrderService{
 	private ProductRepository productRepository;	
 	
 	@Override
-	public Orders placeOrder(Orders order,int userId) {
-	Optional<User> op=	userRepository.findById(userId);
-	if(op.isPresent()) {
-	User user=	op.get();
-	order.setUser(user);
-	}
-   return orderRepository.save(order);
+	public Orders placeOrder(List<Integer> productId,int userId) {
+	   
+	User user=	userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found"));
 	
+   List<Product> products=	productRepository.findAllById(productId);
+   
+   Orders order=new Orders();
+   order.setUser(user);
+   order.setProduct(products);
+   order.setOrderStatus("order placed");
+   
+   double total=0;
+   
+   for(Product p:products) {
+	  total+= p.getProductPrice();
+   }
+   order.setTotalAmount(total);
+   return orderRepository.save(order);
+  
 	}
 	
 	
