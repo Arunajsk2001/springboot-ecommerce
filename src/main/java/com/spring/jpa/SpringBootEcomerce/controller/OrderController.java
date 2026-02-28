@@ -17,15 +17,18 @@ import com.spring.jpa.SpringBootEcomerce.entity.Orders;
 import com.spring.jpa.SpringBootEcomerce.service.OrderService;
 import com.spring.jpa.SpringBootEcomerce.utility.ResponseStructure;
 
+import dto.OrderRequest;
+
 @RestController
 public class OrderController {
 
 	@Autowired
 	private OrderService orderService;
 	
-	@PostMapping("/place-order")
-	public ResponseStructure<Orders> placeOrder(@RequestBody Orders order){
-	order=	orderService.placeOrder(order);
+	
+	@PostMapping("/placeorder/{userId}")
+	public ResponseStructure<Orders> placeOrder(@RequestBody Orders order, @PathVariable int userId){
+	 order =	orderService.placeOrder(order,userId);
 	return ResponseStructure.create(HttpStatus.CREATED.value(), "order has been placed", order);
 	}
 	

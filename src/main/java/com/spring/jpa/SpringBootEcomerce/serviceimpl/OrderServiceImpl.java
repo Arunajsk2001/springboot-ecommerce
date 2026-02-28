@@ -6,21 +6,40 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.spring_boot.product.repository.ProductRepository;
 import com.spring.jpa.SpringBootEcomerce.entity.Orders;
+import com.spring.jpa.SpringBootEcomerce.entity.Product;
+import com.spring.jpa.SpringBootEcomerce.entity.User;
 import com.spring.jpa.SpringBootEcomerce.repository.OrderRepository;
+import com.spring.jpa.SpringBootEcomerce.repository.UserRepository;
 import com.spring.jpa.SpringBootEcomerce.service.OrderService;
+
+import dto.OrderRequest;
 
 @Service
 public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
 	private OrderRepository orderRepository;
-
+    
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private ProductRepository productRepository;	
+	
 	@Override
-	public Orders placeOrder(Orders order) {
-		return orderRepository.save(order);
+	public Orders placeOrder(Orders order,int userId) {
+	Optional<User> op=	userRepository.findById(userId);
+	if(op.isPresent()) {
+	User user=	op.get();
+	order.setUser(user);
 	}
-
+   return orderRepository.save(order);
+	
+	}
+	
+	
 	@Override
 	public List<Orders> fetchAllOrders() {
 	List<Orders>	orders=orderRepository.findAll();

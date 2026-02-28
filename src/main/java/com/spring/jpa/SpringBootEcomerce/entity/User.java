@@ -1,9 +1,12 @@
 package com.spring.jpa.SpringBootEcomerce.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -16,6 +19,8 @@ public class User {
 	private String userRole;
 	private String userPhone;
 	private String userAddress;
+	
+	
 	public int getUserId() {
 		return userId;
 	}
@@ -58,6 +63,14 @@ public class User {
 	public void setUserAddress(String userAddress) {
 		this.userAddress = userAddress;
 	}
-	
+	public List<Orders> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Orders> orders) {
+		this.orders = orders;
+	}
+	@OneToMany(mappedBy = "user")
+	private List<Orders> orders;
 	
 }
